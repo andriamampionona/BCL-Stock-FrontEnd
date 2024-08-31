@@ -7,30 +7,32 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import ArticleInPage from '@/components/Article-in/page';
+import ArticleOutPage from '@/components/Article-out/page';
+import GroupCardPage from '@/components/groupes/page';
+import UsersPage from '@/components/Users/page';
+import PeriodePage from '@/components/periode/page';
+import HomePage from '@/components/Dashboard/page';
 
 const DashboardPage: React.FC = () => {
-
-
   const router = useRouter();
   const { data: session, status } = useSession(); // protection de la page
-  
-    useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/sing-in");
-    }
-  }, [status, router]);
-
   const searchParams = useSearchParams();
   const [selectedContent, setSelectedContent] = useState<string | null>(null);
 
   useEffect(() => {
-    const queryContent = searchParams?.get('content');
-    if (queryContent) {
-      setSelectedContent(queryContent);
+    if (status === "loading") return; // Ne rien faire si le statut est "loading"
+    
+    if (status === "unauthenticated") {
+      router.replace("/sing-in");  // Redirection vers la page de connexion
     } else {
-      setSelectedContent('dashboard'); // Valeur par défaut si `content` n'est pas dans l'URL
+      const queryContent = searchParams?.get('content');
+      if (queryContent) {
+        setSelectedContent(queryContent);
+      } else {
+        setSelectedContent('dashboard'); // Valeur par défaut si `content` n'est pas dans l'URL
+      }
     }
-  }, [searchParams]);
+  }, [status, searchParams, router]);
 
   const handleLinkClick = (content: string) => {
     setSelectedContent(content);
@@ -41,38 +43,24 @@ const DashboardPage: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-
-
-   if (status === "authenticated") { // User authenticated .........
-     return (
+  return (
     <div>
-      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-         <Sidbar onLinkClick={handleLinkClick} activeContent={selectedContent} />
-      
+      <div className="grid min-h-screen w-full h-screen md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+        <Sidbar onLinkClick={handleLinkClick} activeContent={selectedContent} />
         <div className="flex flex-col">
           <Header />
-          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-            <div className="flex items-center">
-              <h1 className="text-lg font-semibold">
-          {selectedContent ? selectedContent.charAt(0).toUpperCase() + selectedContent.slice(1) : 'Dashboard'}
-        </h1>
-            </div>
-            {selectedContent === 'dashboard' && <p>Dashboard Content</p>}
-            {selectedContent === 'products' && <>Products Content</>}
+          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-3/5">
+            {selectedContent === 'dashboard' && <HomePage />}
+            {selectedContent === 'products' && <ArticleOutPage />}
             {selectedContent === 'orders' && <ArticleInPage />}
-            {selectedContent === 'users' && <>Users Content</>}
-            {selectedContent === 'analytics' && <>Analytics Content</>}
+            {selectedContent === 'users' && <UsersPage />}
+            {selectedContent === 'groups' && <GroupCardPage />}
+            {selectedContent === 'analytics' && <PeriodePage />}
           </main>
         </div>
       </div>
     </div>
   );
-  }
-
-  // Vous pouvez renvoyer null ou un composant vide ici
-  return null;
-
-
-}
+};
 
 export default DashboardPage;

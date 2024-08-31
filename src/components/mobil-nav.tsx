@@ -1,7 +1,7 @@
 import React from 'react'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
 import { Button } from './ui/button'
-import { Home, LineChart, Menu, Package, Package2, ShoppingCart, Users} from 'lucide-react'
+import { GroupIcon, Home, LineChart, LucideOutdent, Menu, Package, Package2, ShoppingCart, Users} from 'lucide-react'
 
  
 import {
@@ -17,7 +17,16 @@ import { Badge } from './ui/badge'
 import {
 
 } from "lucide-react"
-export default function MobilNav() {
+
+interface SidbarProps {
+  onLinkClick: (content: string) => void;
+  activeContent: string | null;
+}
+
+const MobilNav: React.FC<SidbarProps> = ({ onLinkClick, activeContent }) => {
+  
+  const isActive = (content: string) => activeContent === content ? 'bg-muted text-primary' : 'text-muted-foreground';
+
   return (
     <Sheet>
             <SheetTrigger asChild>
@@ -37,46 +46,50 @@ export default function MobilNav() {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Package2 className="h-6 w-6" />
-                  <span className="sr-only">Acme Inc</span>
+                    <span className="">BCL Stock</span>
                 </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Home className="h-5 w-5" />
-                  Dashboard
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  Orders
-                  <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                    6
-                  </Badge>
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Package className="h-5 w-5" />
-                  Products
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Users className="h-5 w-5" />
-                  Customers
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <LineChart className="h-5 w-5" />
-                  Analytics
-                </Link>
+                
+            <button
+              onClick={() => onLinkClick('dashboard')}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('dashboard')}`}
+            >
+              <Home className="h-4 w-4" />
+              Dashboard
+            </button>
+            <button
+              onClick={() => onLinkClick('orders')}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('orders')}`}
+            >
+              <ShoppingCart className="h-4 w-4" />
+              Article In
+              <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                6
+              </Badge>
+            </button>
+            <button
+              onClick={() => onLinkClick('products')}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('products')}`}
+            >
+              <LucideOutdent className="h-4 w-4" />
+              Out
+            </button>
+            
+            <button
+              onClick={() => onLinkClick('analytics')}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('analytics')}`}
+            >
+              <GroupIcon className="h-4 w-4" />
+              Groups
+            </button>
+
+            <button
+              onClick={() => onLinkClick('users')}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('users')}`}
+            >
+              <Users className="h-4 w-4" />
+              Users
+            </button>
+
               </nav>
               <div className="mt-auto">
                 <Card>
@@ -98,3 +111,5 @@ export default function MobilNav() {
           </Sheet>
   )
 }
+
+export default MobilNav;

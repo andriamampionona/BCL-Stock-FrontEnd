@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link";
-import { LoginPage } from "./(page)/Login";
 import { ModeToggle } from "@/components/ModeToggle";
 import { signIn, signOut, useSession } from "next-auth/react";
 // import LoginPage from "./Login";
@@ -15,11 +14,11 @@ export default function Home() {
 
 
   return (
-    <main className="w-full flex h-screen flex-col justify-center p-10">
+    <main className="w-full flex flex-col items-baseline  h-full max-h-screen  justify-normal p-10">
       <div className="self-end">
         <ModeToggle />
       </div>
-      <div className="w-full h-full flex flex-col justify-center items-center space-y-6 ">
+      <div className="w-full flex  flex-col justify-center items-center space-y-6 ">
         <h1 className="font-bold text-5xl tracking-tighter">Welcom to you new app!</h1>
        
        

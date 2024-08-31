@@ -39,7 +39,7 @@ import { useRouter } from "next/navigation";
 const LoginForm = () => {
 
  
-    const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();  // Appeler useRouter de manière inconditionnelle
   const [mounted, setMounted] = useState(false);
 
@@ -59,7 +59,7 @@ const LoginForm = () => {
     setError(null);
 
     const res = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
       username: data.email,
       password: data.password,
       callbackUrl: "/dashboard"

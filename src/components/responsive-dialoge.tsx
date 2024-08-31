@@ -23,6 +23,17 @@ import {
 import useMediaQuery from '@/hooks/use-media-query';
 
 
+import {
+Card,
+CardContent,
+CardFooter,
+CardDescription,
+CardHeader,
+CardTitle
+} from '@/components/ui/card'
+
+
+
 export default function ResponsiveDialog({
   children,
   isOpen,
@@ -41,14 +52,31 @@ export default function ResponsiveDialog({
   if (isDesktop) {
     return (
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            {description && (
-              <DialogDescription>{description}</DialogDescription>
-            )}
-          </DialogHeader>
+        <DialogContent className="sm:max-w-[625px]">
+          <Card className="">
+          <CardHeader>
+            <CardTitle className="text-2xl">
+              
+               {title ?  (
+              <span>{title}</span>
+            ) : <span>Article Updating...</span>
+            } 
+
+              
+              </CardTitle>
+           
+            {description ?  (
+              <CardDescription>{description}</CardDescription>
+            ) : <CardDescription>Fill out this form and submit it to update this article.</CardDescription>
+            } 
+          </CardHeader>
+          <CardContent className="grid gap-4">
+
           {children}
+
+           </CardContent>
+
+    </Card>
         </DialogContent>
       </Dialog>
     );

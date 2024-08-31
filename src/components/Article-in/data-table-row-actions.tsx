@@ -16,8 +16,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Row } from '@tanstack/react-table';
-import { MoreHorizontal, SquarePen, Trash2 } from 'lucide-react';
+import { MoreHorizontal, OutdentIcon, SquarePen, Trash2 } from 'lucide-react';
 import ResponsiveDialog from '../responsive-dialoge';
+import DeleteForm from './Dialog/delete-form';
+import { number } from 'zod';
+import OutForm from './Dialog/out-form';
 
 interface WithId<T> {
   id: string;
@@ -32,16 +35,55 @@ export default function DataTableRowActions<TData extends WithId<string>>({
 }: DataTableRowActionsProps<TData>) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isOutOpen, setIsOutOpen] = useState(false);
   const cardId = row.original.id as string;
+  const title = row.original.nomArticle as string;
+  const stock = row.original.stock as number;
+
+  const copyArticle = () => {
+    
+    // navigator.clipboard.writeText(cardId +  " " + 
+    //   row.original.id +  " " + 
+    //   row.original.nomArticle +  " " + 
+    //   row.original.categiry +  " " + 
+    //   row.original.id +  " " + 
+    //   row.original.id +  " " + 
+    //   row.original.id)
+  }
+
   return (
     <>
       <ResponsiveDialog
         isOpen={isEditOpen}
         setIsOpen={setIsEditOpen}
-        title="Edit Person"
+        title="Edit Article"
+        description='Editing this data is changing your database content ....'
       >
         <EditForm cardId={cardId} setIsOpen={setIsEditOpen} />
       </ResponsiveDialog>
+
+      <ResponsiveDialog
+        isOpen={isDeleteOpen}
+        setIsOpen={setIsDeleteOpen}
+        description='Deleting this article is changing your database content ....'
+
+        title={title}
+      >
+        <DeleteForm cardId={parseFloat(cardId)} setIsOpen={setIsDeleteOpen} />
+      </ResponsiveDialog>
+
+
+      <ResponsiveDialog
+        isOpen={isOutOpen}
+        setIsOpen={setIsOutOpen}
+        description='This action is article in your database content ....'
+
+        title={`${title} out`}
+      >
+        <OutForm cardId={cardId} setIsOpen={setIsOutOpen} />
+      </ResponsiveDialog>
+
+
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -50,24 +92,55 @@ export default function DataTableRowActions<TData extends WithId<string>>({
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[160px] z-50">
+        <DropdownMenuContent align="end" className="w-[170px] z-50">
+          <DropdownMenuItem className="group flex w-full items-center justify-between text-left p-0 text-sm font-base text-neutral-500">
+            <button
+              onClick={() => {
+                copyArticle();
+              }}
+              className="w-full justify-start flex rounded-md p-2 transition-all duration-75"
+            >
+              <IconMenu text="Copy Article" icon={<SquarePen className="h-4 w-4" />} />
+            </button>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          
           <DropdownMenuItem className="group flex w-full items-center justify-between text-left p-0 text-sm font-base text-neutral-500">
             <button
               onClick={() => {
                 setIsEditOpen(true);
               }}
-              className="w-full justify-start flex rounded-md p-2 transition-all duration-75 hover:bg-neutral-100"
+              className="w-full justify-start flex rounded-md p-2 transition-all duration-75"
             >
               <IconMenu text="Edit" icon={<SquarePen className="h-4 w-4" />} />
             </button>
           </DropdownMenuItem>
+          {
+            stock == 0 ? "" : 
+            <>
+                  
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="group flex w-full items-center justify-between text-left p-0 text-sm font-base text-neutral-500">
+                <button
+                disabled = {stock==0}
+                  onClick={() => {
+                    setIsOutOpen(true);
+                  }}
+                  className="w-full justify-start flex text-red-300 rounded-md p-2 transition-all duration-75 hover:bg-neutral-100"
+                >
+                  <IconMenu text="Get Out" icon={<OutdentIcon className="h-4 w-4" />} />
+                </button>
+              </DropdownMenuItem>
+            
+            </>
+          }
           <DropdownMenuSeparator />
           <DropdownMenuItem className="group flex w-full items-center justify-between text-left p-0 text-sm font-base text-neutral-500">
             <button
               onClick={() => {
                 setIsDeleteOpen(true);
               }}
-              className="w-full justify-start flex text-red-500 rounded-md p-2 transition-all duration-75 hover:bg-neutral-100"
+              className="w-full justify-start flex text-red-600 rounded-md p-2 transition-all duration-75 hover:bg-neutral-100"
             >
               <IconMenu text="Delete" icon={<Trash2 className="h-4 w-4" />} />
             </button>
@@ -77,3 +150,4 @@ export default function DataTableRowActions<TData extends WithId<string>>({
     </>
   );
 }
+// onClick={() => navigator.clipboard.writeText(payment.id)}

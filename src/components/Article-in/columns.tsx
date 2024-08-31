@@ -27,13 +27,14 @@ import DataTableRowActions from "./data-table-row-actions"
 export  type AarticleIn = {
   id: number
   category: string
-  //status: "pending" | "processing" | "success" | "failed"
+  stock: number
   nomArticle: string
   qte: number
   pu: number
   montant: number
   date: string
   utilisateur: string
+  periode: string
 
 }
 
@@ -44,7 +45,7 @@ const formatDate = (dateString: string) => {
     weekday: 'short', // "Wed"
     day: '2-digit',   // "19"
     month: 'short',    // "Aug"
-    year: 'numeric'    // "2024"
+    // year: 'numeric'    // "2024"
   };
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', options);
@@ -59,16 +60,24 @@ export const columns: ColumnDef<AarticleIn>[] = [
   },
     {
     accessorKey: "date",
-    header: "Date",
     cell: ({ getValue }) => {
       const dateValue = getValue<string>();
       return formatDate(dateValue);
     },
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Date
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    
   },
-    {
-    accessorKey: "category",
-    header: "Category",
-  },
+
   {
     accessorKey: "nomArticle",
     header: ({ column }) => {
@@ -84,8 +93,16 @@ export const columns: ColumnDef<AarticleIn>[] = [
     },
   },
   {
+    accessorKey: "category",
+    header: "Category",
+  },
+  {
+    accessorKey: "periode",
+    header: "Period",
+  },
+  {
     accessorKey: "qte",
-    header: "Quantié",
+    header: "Quantity",
   },
   
   {
@@ -95,6 +112,10 @@ export const columns: ColumnDef<AarticleIn>[] = [
     {
     accessorKey: "montant",
     header: "Montant",
+  },
+  {
+    accessorKey: "stock",
+    header: "En stock",
   },
   {
     accessorKey: "utilisateur",

@@ -3,8 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/provider/theme-provider";
 import Provider from "./Provider";
+import { Toaster } from "@/components/ui/toaster"
 
 import { TooltipProvider } from '@radix-ui/react-tooltip';  // Assurez-vous que vous importez depuis le bon module
+import { ScrollArea } from "@/components/ui/scroll-area";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -30,7 +32,12 @@ export default function RootLayout({
           >
         <Provider> 
           <TooltipProvider>
-              {children}
+              <ScrollArea className='h-full'>
+
+                {children}
+
+              </ScrollArea>
+              <Toaster />
           </TooltipProvider>
         </Provider>
         

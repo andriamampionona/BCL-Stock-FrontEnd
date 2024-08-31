@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, ShoppingCart, Package, Users, LineChart, Package2, Bell } from 'lucide-react';
+import { Home, ShoppingCart, Package, Users, LineChart, Package2, Bell, GroupIcon, OutdentIcon, LucideOutdent } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Button } from './ui/button';
@@ -10,6 +10,7 @@ interface SidbarProps {
 }
 
 const Sidbar: React.FC<SidbarProps> = ({ onLinkClick, activeContent }) => {
+  
   const isActive = (content: string) => activeContent === content ? 'bg-muted text-primary' : 'text-muted-foreground';
 
   return (
@@ -39,7 +40,7 @@ const Sidbar: React.FC<SidbarProps> = ({ onLinkClick, activeContent }) => {
               className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('orders')}`}
             >
               <ShoppingCart className="h-4 w-4" />
-              Orders
+              Article In
               <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                 6
               </Badge>
@@ -48,9 +49,27 @@ const Sidbar: React.FC<SidbarProps> = ({ onLinkClick, activeContent }) => {
               onClick={() => onLinkClick('products')}
               className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('products')}`}
             >
-              <Package className="h-4 w-4" />
-              Products
+              <LucideOutdent className="h-4 w-4" />
+              Out
             </button>
+            
+            <button
+              onClick={() => onLinkClick('analytics')}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('analytics')}`}
+            >
+              <GroupIcon className="h-4 w-4" />
+              Period
+            </button>
+
+            
+            <button
+              onClick={() => onLinkClick('groups')}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('groups')}`}
+            >
+              <GroupIcon className="h-4 w-4" />
+              Groups
+            </button>
+
             <button
               onClick={() => onLinkClick('users')}
               className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('users')}`}
@@ -58,13 +77,7 @@ const Sidbar: React.FC<SidbarProps> = ({ onLinkClick, activeContent }) => {
               <Users className="h-4 w-4" />
               Users
             </button>
-            <button
-              onClick={() => onLinkClick('analytics')}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('analytics')}`}
-            >
-              <LineChart className="h-4 w-4" />
-              Analytics
-            </button>
+
           </nav>
         </div>
       </div>

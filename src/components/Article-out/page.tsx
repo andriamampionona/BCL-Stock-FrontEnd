@@ -9,6 +9,7 @@ import { CalendarDays, CalendarDaysIcon, DockIcon, DownloadIcon, PlusSquare, Squ
 import ResponsiveDialog from "../responsive-dialoge";
 import { DataTable } from "./data-table";
 import { DropdownMenuSeparator } from "../ui/dropdown-menu";
+import { downloadData } from "../Article-in/api/article-api";
 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -76,49 +77,19 @@ export default function ArticleOutPage() {
             >
               <IconMenu text="New Article" icon={<PlusSquare className="h-5 w-5" />} />
             </Button>
-            <div className="flex justify-between space-x-1 items-center py-4">
-              <Button
-                variant={'outline'}
-                onClick={() => {
-                    setIsAddOpen(true);
-                  }}
-                  className="justify-start flex rounded-md p-2 transition-all duration-75"
-                >
-                  <IconMenu text="Date 1" icon={<CalendarDays className="h-5 w-5" />} />
-                </Button>
-                
-
-                <Button
-                variant={'outline'}
-                onClick={() => {
-                    setIsAddOpen(true);
-                  }}
-                  className="justify-start flex rounded-md p-2 transition-all duration-75"
-                >
-                  <IconMenu text="Date 1" icon={<CalendarDaysIcon className="h-5 w-5" />} />
-                </Button>
-                
-            </div>
+          
 
             <div className="flex justify-between space-x-5 items-center py-4">
-              <Button
-                variant={'secondary'}
-                onClick={() => {
-                    setIsAddOpen(true);
-                  }}
-                  className="justify-start flex rounded-md p-2 transition-all duration-75"
-                >
-                  <IconMenu text="Pdf" icon={<DockIcon className="h-5 w-5" />} />
-                </Button>
+              
 
                 <Button
                 variant={'destructive'}
                 onClick={() => {
-                    setIsAddOpen(true);
+                    downloadData(data, "article-out-data")
                   }}
                   className="justify-start flex rounded-md p-2 transition-all duration-75"
                 >
-                  <IconMenu text="Excel" icon={<DownloadIcon className="h-5 w-5" />} />
+                  <IconMenu text="Export To Excel" icon={<DownloadIcon className="h-5 w-5" />} />
                 </Button>
                 
             </div>

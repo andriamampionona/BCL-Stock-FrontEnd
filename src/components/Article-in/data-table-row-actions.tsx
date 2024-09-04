@@ -40,17 +40,6 @@ export default function DataTableRowActions<TData extends WithId<string>>({
   const title = row.original.nomArticle as string;
   const stock = row.original.stock as number;
 
-  const copyArticle = () => {
-    
-    // navigator.clipboard.writeText(cardId +  " " + 
-    //   row.original.id +  " " + 
-    //   row.original.nomArticle +  " " + 
-    //   row.original.categiry +  " " + 
-    //   row.original.id +  " " + 
-    //   row.original.id +  " " + 
-    //   row.original.id)
-  }
-
   return (
     <>
       <ResponsiveDialog
@@ -93,16 +82,7 @@ export default function DataTableRowActions<TData extends WithId<string>>({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[170px] z-50">
-          <DropdownMenuItem className="group flex w-full items-center justify-between text-left p-0 text-sm font-base text-neutral-500">
-            <button
-              onClick={() => {
-                copyArticle();
-              }}
-              className="w-full justify-start flex rounded-md p-2 transition-all duration-75"
-            >
-              <IconMenu text="Copy Article" icon={<SquarePen className="h-4 w-4" />} />
-            </button>
-          </DropdownMenuItem>
+         
           <DropdownMenuSeparator />
           
           <DropdownMenuItem className="group flex w-full items-center justify-between text-left p-0 text-sm font-base text-neutral-500">

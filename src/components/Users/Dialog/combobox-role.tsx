@@ -19,6 +19,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useSession } from "next-auth/react";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -28,6 +29,12 @@ type ComboboxroleProps = {
 };
 
 export function ComboboxRole({ selectedValue, onValueChange }: ComboboxroleProps) {
+
+  
+  const { data: session, status } = useSession();
+
+  const bearerData  = session?.user?.bearer;
+
   const [open, setOpen] = React.useState(false);
 
   const [roles, setRole] = React.useState<{ role: string }[]>([]);
@@ -35,7 +42,13 @@ export function ComboboxRole({ selectedValue, onValueChange }: ComboboxroleProps
   React.useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/role`); // Remplacez `/roles` par le chemin de votre API
+        const response = await axios.get(`${apiUrl}/role`, {
+          headers:{
+            
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer " + bearerData,
+          }
+        }); // Remplacez `/roles` par le chemin de votre API
         setRole(response.data);
       } catch (error) {
         console.error("Error fetching roles:", error);

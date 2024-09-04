@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import * as XLSX from "xlsx/xlsx.mjs";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const updateArticle = async (articleId: string, data: any,  bearerData: string) => {
@@ -144,3 +144,19 @@ export const getDataStockForChart = async (bearerData: string) => {
         console.error("Erreur lors de l' accès aux données :", error);
       } 
 }
+
+
+
+
+export const downloadData = async(data: any, fileName: string) => {
+  
+  const datas = data?.length ? data : []
+  const worksheet = XLSX.utils.json_to_sheet(datas);
+
+  const workbook = XLSX.utils.book_new();
+
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1")
+
+  XLSX.writeFile(workbook, fileName ? `${fileName}.xlsx` : "data.xlsx");
+      
+};

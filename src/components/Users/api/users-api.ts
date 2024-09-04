@@ -101,7 +101,7 @@ export const deleteUser = async (userId: string, bearerData: string) => {
 
 export const addUser = async ( data: any, bearerData: string) => {
   try {
-    const response = await axios.post(`${apiUrl}/inscription`, data, {
+    const response = await axios.post(`${apiUrl}/utilisateur`, data, {
       headers: {
         'Content-Type': 'application/json',
         "Authorization": "Bearer " + bearerData,
@@ -120,7 +120,7 @@ export const addUser = async ( data: any, bearerData: string) => {
   } catch (error) {
     console.error('Error adding user:', error);
     // throw error;
-    return {"Erreur": "Erreur lors de l' accès au donnée"}
+    return {"Erreur": "Accès non autorisé !"}
 }
 };
 

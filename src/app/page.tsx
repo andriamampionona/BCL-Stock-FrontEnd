@@ -18,8 +18,8 @@ export default function Home() {
       <div className="self-end">
         <ModeToggle />
       </div>
-      <div className="w-full flex  flex-col justify-center items-center space-y-6 ">
-        <h1 className="font-bold text-5xl tracking-tighter">Welcom to you new app!</h1>
+      <div className="w-full flex  flex-col justify-center mt-16 items-center space-y-6 ">
+        <h1 className="font-bold text-5xl tracking-tighter">Welcome to your new app!</h1>
        
        
        {

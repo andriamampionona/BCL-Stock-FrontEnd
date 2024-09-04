@@ -79,6 +79,14 @@ const MobilNav: React.FC<SidbarProps> = ({ onLinkClick, activeContent }) => {
               className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('analytics')}`}
             >
               <GroupIcon className="h-4 w-4" />
+              Period
+            </button>
+            
+            <button
+              onClick={() => onLinkClick('analytics')}
+              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${isActive('analytics')}`}
+            >
+              <GroupIcon className="h-4 w-4" />
               Groups
             </button>
 

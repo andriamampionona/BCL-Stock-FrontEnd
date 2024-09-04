@@ -183,8 +183,7 @@ export default function ArticleInCardPage() {
 
   const { data: session, status } = useSession();
 
-  const bearerData = session?.user?.bearer;
-
+  const bearerData = session?.user?.bearer
 
     const filterData = async (nom: string) => {
      try {
@@ -269,7 +268,7 @@ const router = useRouter()
 
         <ScrollArea className='h-96'>
       <div className="grid grid-cols-1   pr-5 mt-4 sm:grid-cols-2 gap-4">
-          {data?.map((article) => (
+          {data.map((article) => (
             <Item key={article.id} {...article} />
           ))}
 

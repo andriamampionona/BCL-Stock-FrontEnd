@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/form';
 import { useToast } from "../ui/use-toast";
 import { Input } from "../ui/input";
-import { addArticle } from "./api/article-api";
+import { addArticle, downloadData } from "./api/article-api";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
@@ -86,12 +86,6 @@ export default function ArticleInPage() {
       };
 
   useEffect(() => {
-   
-    // if (status === "unauthenticated") {
-    //   router.push("/sing-in");
-    // } else if (status === "authenticated") {
-     
-    // }
 
     fetchData();
 
@@ -101,35 +95,7 @@ export default function ArticleInPage() {
     return <div>Loading...</div>;
   }
 
-
-const onSubmit = async (values: z.infer<typeof ShearchSchema>) => {
-    try {
-          // Submit the form data to your API here
-    const response = await addArticle( values);
-    
-    if (response.Message) {      
-      
-    
-      toast({
-          title: "Adding: successfull...",
-          description: response.Message,
-        })
-    }
-    else{
-      toast({
-        variant: "destructive",
-        title: "Adding : faild...",
-        description: response.Erreur,
-        })
-      
-    }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // if (status === "authenticated") { // User authenticated .........
-      return (
+  return (
         <div className="container  mx-auto py-0 ">
            <div className="flex justify-between items-center ">
              <Button
@@ -175,11 +141,11 @@ const onSubmit = async (values: z.infer<typeof ShearchSchema>) => {
                   <Button
                 variant={'destructive'}
                 onClick={() => {
-                    setIsAddOpen(true);
+                    downloadData(data, "article-in-data")
                   }}
                   className="justify-start flex rounded-md p-2 transition-all duration-75"
                 >
-                  <IconMenu text="Excel" icon={<DownloadIcon className="h-5 w-5" />} />
+                  <IconMenu text="Export To Excel" icon={<DownloadIcon className="h-5 w-5" />} />
                 </Button>
             </div>
 

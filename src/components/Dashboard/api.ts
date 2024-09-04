@@ -33,7 +33,7 @@ export const getTotal = async (bearerData: string) => {
 
 export const getTotalArticle = async ( bearerData: string) => {
        
-        const res = await fetch(`${apiUrl}/article/total-amount/1`, {
+        const res = await fetch(`${apiUrl}/article/total-amount`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export const getTotalArticle = async ( bearerData: string) => {
       
 export const getTotalArticleOut = async (bearerData: string) => {
        
-        const res = await fetch(`${apiUrl}/article/total-amount-out/1`, {
+        const res = await fetch(`${apiUrl}/article/total-amount-out`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

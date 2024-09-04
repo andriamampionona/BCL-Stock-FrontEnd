@@ -36,6 +36,8 @@ export default function AddUserForm({
   const [productData, setProductData] = useState<any>(null);
 
   const { data: session, status } = useSession();
+
+  const bearerData  = session?.user?.bearer;
  
   const form = useForm<z.infer<typeof USERS>>({
     resolver: zodResolver(USERS),
@@ -60,7 +62,7 @@ export default function AddUserForm({
   const onSubmit = async (values: z.infer<typeof USERS>) => {
     try {
           // Submit the form data to your API here
-    const response = await addUser(values);
+    const response = await addUser(values, bearerData);
     
     if (response.Message) {      
       toast({
@@ -157,7 +159,7 @@ export default function AddUserForm({
     <FormItem className='flex flex-row items-end justify-between '>
           
             <FormControl>
-                <Button type='reset' onClick={()=>{setIsOpen(false)}} variant={'outline'}>Saving...</Button>
+                <Button type='reset' onClick={()=>{setIsOpen(false)}} variant={'outline'}>Cancel</Button>
             </FormControl>
         
           <FormControl>

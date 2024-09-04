@@ -23,8 +23,11 @@ export default function HomePage() {
 
   const router = useRouter();
 
-    useEffect(()=>{
+  useEffect(()=>{
             
+  console.log(bearerData);
+
+
     if (status === "loading") return; // Ne rien faire si le statut est "loading"
     
     if (status === "unauthenticated") {
@@ -55,7 +58,7 @@ export default function HomePage() {
       
         <div className="flex-row flex justify-between gap-4 item-center">
             <p>Dashboard</p>
-            <p>Period</p>
+            
 
 
         </div>

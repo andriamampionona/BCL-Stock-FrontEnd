@@ -12,50 +12,59 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch(apiUrl +"/connexion", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: credentials?.username,
-            password: credentials?.password,
-          }),
-        });
-        const user = await res.json();
+        try {
+          const res = await fetch(apiUrl + "/connexion", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: credentials?.username,
+              password: credentials?.password,
+            }),
+          });
 
-        if (user.bearer) {
-          return user;
-        } else {
-          console.log(user)
-         
+          if (!res.ok) {
+            // Gérer les erreurs de réponse (4xx ou 5xx)
+            console.error("Erreur de réponse", res.status, res.statusText);
+            return null;
+          }
+
+          const user = await res.json();
+
+          if (user.bearer) {
+            return user;
+          } else {
+            console.log("Erreur de connexion", user);
+            return null;
+          }
+        } catch (error) {
+          // Gérer les erreurs de réseau ou d'autres erreurs
+          console.error("Erreur de réseau ou autre", error);
           return null;
- 
         }
       },
+
     }),
   ],
     pages: {
     signIn: '/sing-in', // Page de connexion personnalisée
   },
   callbacks: {
-    async jwt({ token, user, account }) {
-      console.log({ account });
-
-      return { ...token, ...user };
-    },
-    async session({ session, token, user }) {
-      session.user = token as any;
-
-      return session;
-    },
-     async redirect({ url, baseUrl }) {
-
-      // Rediriger vers /dashboard après une connexion réussie
-      return url.startsWith(baseUrl) ? url : `${baseUrl}/dashboard`
-
-    }
+  async jwt({ token, user, account }) {
+    console.log({ token, user, account });
+    return { ...token, ...user };
   },
+  async session({ session, token, user }) {
+    console.log({ session, token, user });
+    session.user = token as any;
+    return session;
+  },
+  async redirect({ url, baseUrl }) {
+    console.log("Redirection:", { url, baseUrl });
+    return url.startsWith(baseUrl) ? url : `${baseUrl}/dashboard`;
+  },
+},
 };
 
 export default NextAuth(authOptions);

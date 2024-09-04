@@ -31,6 +31,7 @@ import { Input } from "../ui/input";
 import { addperiode } from "./api/article-api";
 import { title } from "process";
 import { DataTablePeriode } from "./data-table";
+import { downloadData } from "../Article-in/api/article-api";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
@@ -154,14 +155,7 @@ const onSubmit = async (values: z.infer<typeof ShearchSchema>) => {
             <div className="flex justify-between space-x-1 items-center py-4">
                    
             </div>
-            <div className="relative mt-3 ">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search products..."
-                className="w-full appearance-none bg-background pl-8 shadow-none"
-              />
-            </div>
+           
 
 
 {/* View mode */}
@@ -169,37 +163,16 @@ const onSubmit = async (values: z.infer<typeof ShearchSchema>) => {
               
                
 
-              <Button
-                variant={ isCard ? 'secondary' :'outline'  }
-                onClick={() => {
-                    setIsTable(false);
-                    setIsCard(true);
-                  }}
-                  className="justify-start flex rounded-md p-2 transition-all duration-75"
-                >
-                  <IconMenu text="Card" icon={<DockIcon className="h-5 w-5" />} />
-                </Button>
-
-                <Button
-                variant={ isTable ? 'secondary' :'outline'  }
+             
                 
-                onClick={() => {
-                    setIsCard(false);
-                    setIsTable(true);
-                  }}
-                  className="justify-start flex rounded-md p-2 transition-all duration-75"
-                >
-                  <IconMenu text="Table" icon={<ListBulletIcon  className="h-5 w-5" />} />
-                </Button>
-                
-                  <Button
+                    <Button
                 variant={'destructive'}
                 onClick={() => {
-                    setIsAddOpen(true);
+                    downloadData(data, "article-in-data")
                   }}
                   className="justify-start flex rounded-md p-2 transition-all duration-75"
                 >
-                  <IconMenu text="Excel" icon={<DownloadIcon className="h-5 w-5" />} />
+                  <IconMenu text="Export To Excel" icon={<DownloadIcon className="h-5 w-5" />} />
                 </Button>
             </div>
 

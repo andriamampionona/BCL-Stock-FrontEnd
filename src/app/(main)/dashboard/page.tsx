@@ -3,7 +3,7 @@
 
 import Sidbar from '@/components/Sidbar';
 import Header from '@/components/hader';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import ArticleInPage from '@/components/Article-in/page';
@@ -13,7 +13,7 @@ import UsersPage from '@/components/Users/page';
 import PeriodePage from '@/components/periode/page';
 import HomePage from '@/components/Dashboard/page';
 
-const DashboardPage: React.FC = () => {
+const PageWithSuspense = () => {
   const router = useRouter();
   const { data: session, status } = useSession(); // protection de la page
   const searchParams = useSearchParams();
@@ -62,5 +62,11 @@ const DashboardPage: React.FC = () => {
     </div>
   );
 };
+
+const DashboardPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <PageWithSuspense />
+  </Suspense>
+);
 
 export default DashboardPage;

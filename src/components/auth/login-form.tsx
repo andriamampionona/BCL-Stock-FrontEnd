@@ -31,20 +31,26 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import { LoginSchema } from "../../../schemas";
 import { Loader2, LoaderCircle } from "lucide-react";
 
-import { getCsrfToken, signIn } from "next-auth/react"
+import { getCsrfToken, signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation";
-
 
 
 const LoginForm = () => {
 
+  const { data: session, status } = useSession();
  
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();  // Appeler useRouter de manière inconditionnelle
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+
+    if (status !== "unauthenticated") {
+      router.replace("/dashboard");  // Redirection vers la page de connexion
+    } else {
     setMounted(true);
+
+    }
   }, []);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -78,75 +84,75 @@ const LoginForm = () => {
     return(
        
         <Card className="max-w-sm">
-      <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>
-          Enter your email below to login to your account.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-4">
+          <CardHeader>
+            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardDescription>
+              Enter your email below to login to your account.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
         
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4"
-            >
-                <FormField
-                name="email"
-                control={form.control}
-                render={({field}) => (
-                
-                    <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                            <Input {...field} id="email" type="email"  
-                            placeholder="m@example.com" 
-                            disabled = {isPending}/>
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    
+          <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4"
+              >
+                  <FormField
+                  name="email"
+                  control={form.control}
+                  render={({field}) => (
+                  
+                      <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                              <Input {...field} id="email" type="email"  
+                              placeholder="m@example.com" 
+                              disabled = {isPending}/>
+                          </FormControl>
+                          <FormMessage />
+                      </FormItem>
+                      
 
-                )
-                }
-                />
+                  )
+                  }
+                  />
 
-                 <FormField
-                name="password"
-                control={form.control}
-                render={({field}) => (
-                
-                    <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                            <Input {...field} id="password" type="password"  
-                            placeholder="***********" 
-                            disabled = {isPending}/>
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                    
+                  <FormField
+                  name="password"
+                  control={form.control}
+                  render={({field}) => (
+                  
+                      <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl>
+                              <Input {...field} id="password" type="password"  
+                              placeholder="***********" 
+                              disabled = {isPending}/>
+                          </FormControl>
+                          <FormMessage />
+                      </FormItem>
+                      
 
-                )
-                }
-                />
-                 {error && <p className="text-red-500">{error}</p>} {/* Affichage de l'erreur */}
-      
-                    
-                    <Button type="submit">
-                        {
-                            isPending? <LoaderCircle  className="w-5 h-5 animate-spin"/> : 'Login'
-                        }
-                    </Button>
+                  )
+                  }
+                  />
+                  {error && <p className="text-red-500">{error}</p>} {/* Affichage de l'erreur */}
+        
+                      
+                      <Button type="submit">
+                          {
+                              isPending? <LoaderCircle  className="w-5 h-5 animate-spin"/> : 'Login'
+                          }
+                      </Button>
 
-            </form>
-        </Form>
+              </form>
+          </Form>
         
        
       </CardContent>
       {/* <CardFooter>
         <Button className="w-full">Sign in</Button>
       </CardFooter> */}
-    </Card>
+        </Card>
     )
 
 }

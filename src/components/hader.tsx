@@ -15,7 +15,7 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { ModeToggle } from './ModeToggle';
 import { useSearchParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 import { useForm } from 'react-hook-form';
@@ -34,9 +34,13 @@ import {
 
 import { addArticle, updateSelectPeriod } from './Article-in/api/article-api';
 import { ComboboxPeriod } from './Article-in/Dialog/combobox-period';
-import { toast } from './ui/use-toast';
+import { toast, useToast } from './ui/use-toast';
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default function Header() {
 
+  const {toast} = useToast()
   
   const router = useRouter();
   const { data: session, status } = useSession(); // protection de la page
@@ -82,20 +86,37 @@ const onSubmit = async (values: z.infer<typeof ShearchSchema>) => {
 
 
    const handleLogout = async () => {
-    try {
-      const response = await fetch('/sign-out/logout', {
+     try {
+      // Envoyer une requête au backend pour gérer la déconnexion
+      const response = await fetch(`${apiUrl}/deconnection`, { // Modifier avec votre URL API
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${bearerData}` // Utilisez le token si nécessaire
+        },
       });
 
-      if (response.ok) {
-        // Après la déconnexion, rediriger l'utilisateur
-        router.push('/sign-in'); // Redirection après déconnexion
-      } else {
-        console.error('Failed to logout');
+      if (!response.ok) {
+       toast({
+        title: "Error",
+        variant: 'destructive',
+        description : 'You are not disconnected'
+       })
       }
+
+
+      toast({
+        title: "Disconnected",
+        variant: 'default',
+        description : 'You are disconnected.'
+       })
+      // Déconnecter l'utilisateur côté client
+      await signOut({ redirect: true });
+    
     } catch (error) {
-      console.error('An error occurred while logging out', error);
+     console.log(error)
     }
+
   };
 
   
@@ -147,14 +168,13 @@ const onSubmit = async (values: z.infer<typeof ShearchSchema>) => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-
-              <Button onClick={() => {
+              <DropdownMenuItem
+              onClick={() => {
                 handleLogout();
 
               }}>
-                Logout
-              </Button>  
+
+                Logout 
                 
                 
               </DropdownMenuItem>

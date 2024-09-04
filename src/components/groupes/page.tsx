@@ -21,6 +21,8 @@ import IconMenu from '../icone-menu';
 
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useSession } from 'next-auth/react';
+import { DownloadIcon } from '@radix-ui/react-icons';
+import { downloadData } from '../Article-in/api/article-api';
 // export type Person
 export type Groupe = {
   id: string;
@@ -155,15 +157,25 @@ export default function GroupCardPage() {
       </ResponsiveDialog>
 
 
-      <div className="w-full  grid grid-cols-1 sm:grid-cols-2 gap-4">
-  
+  <div className="flex flex-row justify-between space-x-5 items-center py-4">
+              
+
       <Card
         onClick={()=>{setIsAddOpen(true)}}
         className=" w-40 p-4 mb-2 cursor-pointer flex shadow-md relative hover:shadow-xl duration-200 transition-all">
           <IconMenu text="New Group" icon={<PlusSquareIcon className="h-5 w-5" />} />
       </Card>
-  
-  
+
+                <Button
+                variant={'destructive'}
+                onClick={() => {
+                    downloadData(GROUPS, "Group-data")
+                  }}
+                  className="justify-start flex rounded-md p-2 transition-all duration-75"
+                >
+                  <IconMenu text="Export To Excel" icon={<DownloadIcon className="h-5 w-5" />} />
+                </Button>
+                
       </div>
 
       <DropdownMenuSeparator />
